@@ -1,4 +1,5 @@
 import 'package:expense_tracker_mobile_app/providers/permissions.provider.dart';
+import 'package:expense_tracker_mobile_app/screens/login.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:provider/provider.dart';
@@ -18,9 +19,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: '/',
-      home: Scaffold(
-        body: Container(),
-      ),
+      routes: {
+        '/': (context) => const LoginScreen(),
+      },
       debugShowCheckedModeBanner: true,
       theme: FlexThemeData.light(
           scheme: FlexScheme.hippieBlue,
