@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Container(),
       ),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: true,
       theme: FlexThemeData.light(
           scheme: FlexScheme.hippieBlue,
           fontFamily: 'Roboto',
