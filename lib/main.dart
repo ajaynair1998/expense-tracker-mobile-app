@@ -1,4 +1,5 @@
 import 'package:expense_tracker_mobile_app/providers/permissions.provider.dart';
+import 'package:expense_tracker_mobile_app/providers/storage.provider.dart';
 import 'package:expense_tracker_mobile_app/screens/login.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -8,6 +9,9 @@ void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
       create: (_) => PermissionData(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => StorageData(),
     ),
   ], child: const MyApp()));
 }

@@ -1,12 +1,16 @@
+import 'package:expense_tracker_mobile_app/configs/api.dart';
+import 'package:expense_tracker_mobile_app/providers/storage.provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:async';
-import 'dart:convert' show json;
+import 'dart:convert' show json, jsonEncode, jsonDecode;
 
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
   // Optional clientId
@@ -44,6 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _handleGetContact(GoogleSignInAccount user) async {
+    _handleLoggingToApp(_currentUser?.email, 'ajay');
+
     setState(() {
       _contactText = 'Loading contact info...';
     });
@@ -70,6 +76,34 @@ class _LoginScreenState extends State<LoginScreen> {
         _contactText = 'No contacts to display.';
       }
     });
+  }
+
+  Future<void> _handleLoggingToApp(String? username, String password) async {
+    try {
+      if (username == null) {
+        return;
+      }
+
+      final body = jsonEncode({"email": username, "password": 'ajay'});
+      final Map<String, String> headers = {
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+      };
+      final http.Response response = await http.post(
+          Uri.parse(ConfigurationData.loginApi),
+          body: body,
+          headers: headers);
+      final convert = jsonDecode(response.body);
+      final FlutterSecureStorage storage =
+          Provider.of<StorageData>(context, listen: false).storage;
+
+      await storage?.write(key: "token", value: 'Bearer  ${convert['token']}');
+      final data = await storage?.readAll();
+      print(data?['token']);
+      return;
+    } catch (err) {
+      print(err.toString());
+    }
   }
 
   String? _pickFirstNamedContact(Map<String, dynamic> data) {
